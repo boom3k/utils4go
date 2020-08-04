@@ -13,7 +13,8 @@ import (
 	"os"
 	"strings"
 )
-func main(){}
+
+func main() {}
 
 //General Stuff--------------------------------------------------------------------
 func GetObj(anyType interface{}, e error) interface{} {
@@ -107,8 +108,7 @@ func ReadLine(output string) string {
 	fmt.Print(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	check(err)
-	return strings.TrimSuffix(input, "\r\n")
-	//return strings.Replace(input, "\r\n", "", -1)
+	return strings.Replace(input, "\r\n", "", -1)
 }
 
 //Json Stuff--------------------------------------------------------------------
