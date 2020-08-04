@@ -108,7 +108,10 @@ func ReadLine(output string) string {
 	fmt.Print(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	check(err)
-	return strings.Replace(input, "\r\n", "", -1)
+	result := ""
+	result = strings.Replace(input, "\r", "", -1)
+	result = strings.Replace(input, "\n", "", -1)
+	return result
 }
 
 //Json Stuff--------------------------------------------------------------------
