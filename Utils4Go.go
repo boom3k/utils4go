@@ -115,18 +115,15 @@ func ReadLine(output string) string {
 }
 
 //Json Stuff--------------------------------------------------------------------
-func ReadJsonFile(filePath string) map[string]interface{} {
-	jsonFile, err := os.Open(filePath)
-	check(err)
-	fmt.Println("Successfully Opened: " + filePath)
-	defer jsonFile.Close()
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	var result map[string]interface{}
-	json.Unmarshal(byteValue, &result)
-	return result
-
+func ParseJSONFileToMap(filePath string) map[string]interface{} {
+	file, _ := os.Open(filePath)
+	defer file.Close()
+	bytes, _ := ioutil.ReadAll(file)
+	var fileAsJSON map[string]interface{}
+	json.Unmarshal(bytes, &fileAsJSON)
+	return fileAsJSON
 }
-func GetJsonKey(target interface{}, key string) interface{} {
+func GetJsonValue(target interface{}, key string) interface{} {
 	return target.(map[string]interface{})[key]
 }
 func FetchGetResponse(request string) map[string]interface{} {
