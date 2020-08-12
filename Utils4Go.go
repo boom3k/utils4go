@@ -35,6 +35,15 @@ func PrintAll(list []string) {
 	}
 }
 
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
 //Encryption Stuff--------------------------------------------------------------------
 func DecryptString(cipherstring string, keystring string) string {
 	// Byte array of the string
