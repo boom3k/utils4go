@@ -24,7 +24,7 @@ func GetObj(anyType interface{}, e error) interface{} {
 func ReadFile(filePath string) []byte {
 	return GetObj(ioutil.ReadFile(filePath)).([]byte)
 }
-func check(err error) {
+func Check(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -35,7 +35,7 @@ func PrintAll(list []string) {
 	}
 }
 
-func contains(s []string, e string) bool {
+func Contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {
 			return true
