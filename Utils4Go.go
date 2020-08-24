@@ -18,7 +18,7 @@ func main() {}
 
 //General Stuff--------------------------------------------------------------------
 func GetObj(anyType interface{}, e error) interface{} {
-	check(e)
+	Check(e)
 	return anyType
 }
 func ReadFile(filePath string) []byte {
@@ -116,7 +116,7 @@ func EncryptString(plainstring, keystring string) string {
 func ReadLine(output string) string {
 	fmt.Print(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
-	check(err)
+	Check(err)
 	result := ""
 	result = strings.Replace(input, "\r", "", -1)
 	result = strings.Replace(input, "\n", "", -1)
