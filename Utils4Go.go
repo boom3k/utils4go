@@ -113,14 +113,13 @@ func EncryptString(plainstring, keystring string) string {
 }
 
 //Console Stuff--------------------------------------------------------------------
-func ReadLine(output string) string {
+func Readline(output string) string {
 	fmt.Print(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	Check(err)
-	result := ""
-	result = strings.Replace(input, "\r", "", -1)
-	result = strings.Replace(input, "\n", "", -1)
-	return result
+	input = strings.Replace(input, "\n", "", -1)
+	input = strings.Replace(input, "\r", "", -1)
+	return input
 }
 
 //Json Stuff--------------------------------------------------------------------
