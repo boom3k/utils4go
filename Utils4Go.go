@@ -11,30 +11,24 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
 func main() {}
 
-//General Stuff--------------------------------------------------------------------
+//General Stuff----------------------------------------------------------------------
 func GetObj(anyType interface{}, e error) interface{} {
 	Check(e)
 	return anyType
-}
-func ReadFile(filePath string) []byte {
-	return GetObj(ioutil.ReadFile(filePath)).([]byte)
 }
 func Check(err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
 }
-func PrintAll(list []string) {
-	for _, s := range list {
-		fmt.Println(s)
-	}
-}
 
+//String Stuff
 func Contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {
@@ -112,7 +106,23 @@ func EncryptString(plainstring, keystring string) string {
 	return string(ciphertext)
 }
 
-//Console Stuff--------------------------------------------------------------------
+//File Stuff--------------------------------------------------------------------------
+func ReadFile(filePath string) []byte {
+	return GetObj(ioutil.ReadFile(filePath)).([]byte)
+}
+func getAllFiles(root string) []string {
+	var files []string
+	err := filepath.Walk(root, func(absoluteFilePath string, info os.FileInfo, err error) error {
+		files = append(files, absoluteFilePath)
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+	return files
+}
+
+//Console Stuff-----------------------------------------------------------------------
 func Readline(output string) string {
 	fmt.Print(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -122,7 +132,7 @@ func Readline(output string) string {
 	return input
 }
 
-//Json Stuff--------------------------------------------------------------------
+//Json Stuff--------------------------------------------------------------------------
 func ParseJSONFileToMap(filePath string) map[string]interface{} {
 	file, _ := os.Open(filePath)
 	defer file.Close()
