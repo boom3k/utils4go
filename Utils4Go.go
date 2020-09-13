@@ -110,7 +110,7 @@ func EncryptString(plainstring, keystring string) string {
 func ReadFile(filePath string) []byte {
 	return GetObj(ioutil.ReadFile(filePath)).([]byte)
 }
-func getAllFiles(root string) []string {
+func GetAllFiles(root string) []string {
 	var files []string
 	err := filepath.Walk(root, func(absoluteFilePath string, info os.FileInfo, err error) error {
 		files = append(files, absoluteFilePath)
