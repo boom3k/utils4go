@@ -19,12 +19,12 @@ func main() {}
 
 //General Stuff----------------------------------------------------------------------
 func GetObj(anyType interface{}, e error) interface{} {
-	Check(e)
+	CatchException(e)
 	return anyType
 }
-func Check(err error) {
+func CatchException(err error) {
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 }
 
@@ -164,7 +164,7 @@ func WriteToFile(filename string, data string) error {
 func Readline(output string) string {
 	fmt.Print(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
-	Check(err)
+	CatchException(err)
 	input = strings.Replace(input, "\n", "", -1)
 	input = strings.Replace(input, "\r", "", -1)
 	return input
