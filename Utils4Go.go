@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -168,6 +169,17 @@ func Readline(output string) string {
 	input = strings.Replace(input, "\n", "", -1)
 	input = strings.Replace(input, "\r", "", -1)
 	return input
+}
+func SetLogger(fileName string) {
+	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.SetOutput(file)
+}
+func PrintLog(s ...interface{}) {
+	log.Println(s)
+	fmt.Println(s)
 }
 
 //Json Stuff--------------------------------------------------------------------------
