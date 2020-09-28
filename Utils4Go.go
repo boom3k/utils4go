@@ -173,13 +173,14 @@ func Readline(output string) string {
 	input = strings.Replace(input, "\r", "", -1)
 	return input
 }
-func Log2File(output string) {
+func Log2File(output string) string {
 	time := time.Now().Format("Mon Jan _2 2006 15:04:05") + " - "
 	f, err := os.OpenFile("runner.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 	CatchException(err)
 	defer f.Close()
 	f.WriteString(time + output + "\n")
 	fmt.Println(time + output)
+	return output
 }
 
 //Json Stuff--------------------------------------------------------------------------
