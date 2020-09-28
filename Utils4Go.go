@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -25,11 +26,12 @@ func GetObj(anyType interface{}, e error) interface{} {
 func CatchException(err error) {
 	if err != nil {
 		panic(err)
+		log.Fatalf(err.Error())
 	}
 }
 
 //String Stuff
-func Contains(s []string, e string) bool {
+func SliceContains(s []interface{}, e interface{}) bool {
 	for _, a := range s {
 		if a == e {
 			return true
