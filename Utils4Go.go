@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 func main() {}
@@ -172,11 +173,12 @@ func Readline(output string) string {
 	return input
 }
 func Log2File(output string) {
+	time := time.Now().Format("Mon Jan _2 2006 15:04:05") + " - "
 	f, err := os.OpenFile("runner.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 	CatchException(err)
 	defer f.Close()
-	f.WriteString(output + "\n")
-	fmt.Println(output)
+	f.WriteString(time + output + "\n")
+	fmt.Println(time + output)
 }
 
 //Json Stuff--------------------------------------------------------------------------
