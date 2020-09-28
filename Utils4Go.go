@@ -17,7 +17,8 @@ import (
 	"time"
 )
 
-func main() {}
+func main() {
+}
 
 //General Stuff----------------------------------------------------------------------
 func GetObj(anyType interface{}, e error) interface{} {
@@ -199,4 +200,12 @@ func FetchGetResponse(request string) map[string]interface{} {
 	var response map[string]interface{}
 	json.Unmarshal(data, &response)
 	return response
+}
+
+//Timer Stuff--------------------------------------------------------------------------
+func TrackFunction(functionName string) (string, time.Time) {
+	return functionName, time.Now()
+}
+func Duration(msg string, start time.Time) {
+	Log2File(msg + " " + fmt.Sprint(time.Since(start)))
 }
