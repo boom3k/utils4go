@@ -162,7 +162,7 @@ func WriteToFile(filename string, data string) error {
 
 //Console Stuff-----------------------------------------------------------------------
 func Readline(output string) string {
-	fmt.Print(output)
+	Log2File(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	CatchException(err)
 	input = strings.Replace(input, "\n", "", -1)
