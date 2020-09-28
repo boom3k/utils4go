@@ -207,5 +207,5 @@ func TrackFunction(functionName string) (string, time.Time) {
 	return functionName, time.Now()
 }
 func Duration(msg string, start time.Time) {
-	Log2File(msg + " " + fmt.Sprint(time.Since(start)))
+	Log2File(msg + " completed in: " + fmt.Sprint(time.Since(start)))
 }
