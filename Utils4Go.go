@@ -23,6 +23,7 @@ func main() {
 }
 
 var timeTaken time.Duration
+var log2FileDebug = false
 
 //General Stuff----------------------------------------------------------------------
 func GetObj(anyType interface{}, e error) interface{} {
@@ -177,13 +178,21 @@ func Readline(output string) string {
 	input = strings.Replace(input, "\r", "", -1)
 	return input
 }
+func EnabledLog2FileDebug() {
+	log2FileDebug = true
+}
 func Log2File(output string) string {
 	time := time.Now().Format("Mon Jan _2 2006 15:04:05") + " - "
 	f, err := os.OpenFile("runner.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 	CatchException(err)
 	defer f.Close()
 	f.WriteString(time + output)
-	fmt.Print(time + output)
+	if log2FileDebug == true {
+		fmt.Print(time + output)
+	} else {
+		fmt.Print(output)
+	}
+
 	return output
 }
 func Log2FileLn(outputLn string) {
