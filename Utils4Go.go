@@ -25,7 +25,7 @@ func main() {
 var timeTaken time.Duration
 var log2FileDebug = false
 
-//General Stuff----------------------------------------------------------------------
+/*General Stuff----------------------------------------------------------------------*/
 func GetObj(anyType interface{}, e error) interface{} {
 	CatchException(e)
 	return anyType
@@ -37,7 +37,7 @@ func CatchException(err error) {
 	}
 }
 
-//String Stuff
+/*String Stuff-----------------------------------------------------------------------*/
 func SliceContains(s []interface{}, e interface{}) bool {
 	for _, a := range s {
 		if a == e {
@@ -47,7 +47,7 @@ func SliceContains(s []interface{}, e interface{}) bool {
 	return false
 }
 
-//Encryption Stuff--------------------------------------------------------------------
+/*Encryption Stuff--------------------------------------------------------------------*/
 func DecryptString(cipherstring string, keystring string) string {
 	// Byte array of the string
 	ciphertext := []byte(cipherstring)
@@ -115,7 +115,7 @@ func EncryptString(plainstring, keystring string) string {
 	return string(ciphertext)
 }
 
-//File Stuff--------------------------------------------------------------------------
+/*File Stuff--------------------------------------------------------------------------*/
 func ReadFile(filePath string) []byte {
 	return GetObj(ioutil.ReadFile(filePath)).([]byte)
 }
@@ -169,7 +169,7 @@ func WriteToFile(filename string, data string) error {
 	return file.Sync()
 }
 
-//Console Stuff-----------------------------------------------------------------------
+/*Console Stuff-----------------------------------------------------------------------*/
 func Readline(output string) string {
 	Log2File(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -199,7 +199,7 @@ func Log2FileLn(outputLn string) {
 	Log2File(outputLn + "\n")
 }
 
-//Json Stuff--------------------------------------------------------------------------
+/*Json Stuff--------------------------------------------------------------------------*/
 func ParseJSONFileToMap(filePath string) map[string]interface{} {
 	file, _ := os.Open(filePath)
 	defer file.Close()
@@ -219,7 +219,7 @@ func FetchGetResponse(request string) map[string]interface{} {
 	return response
 }
 
-//Timer Stuff--------------------------------------------------------------------------
+/*Timer Stuff--------------------------------------------------------------------------*/
 func TrackFunction(functionName string) (string, time.Time) {
 	return functionName, time.Now()
 }
@@ -227,12 +227,11 @@ func Duration(msg string, start time.Time) {
 	timeTaken = time.Since(start)
 	Log2FileLn(msg + " completed in: " + fmt.Sprint(timeTaken))
 }
-
 func GetTimeTaken() time.Duration {
 	return timeTaken
 }
 
-//IP Stuff
+/*IP Stuff-----------------------------------------------------------------------------*/
 func GetExternalIp() (string, error) {
 	ifaces, err := net.Interfaces()
 	if err != nil {
