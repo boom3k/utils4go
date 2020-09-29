@@ -178,9 +178,12 @@ func Log2File(output string) string {
 	f, err := os.OpenFile("runner.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
 	CatchException(err)
 	defer f.Close()
-	f.WriteString(time + output + "\n")
-	fmt.Println(time + output)
+	f.WriteString(time + output)
+	fmt.Print(time + output)
 	return output
+}
+func Log2FileLn(outputLn string) {
+	Log2File(outputLn + "\n")
 }
 
 //Json Stuff--------------------------------------------------------------------------
