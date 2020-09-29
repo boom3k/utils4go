@@ -212,8 +212,10 @@ func FetchGetResponse(request string) map[string]interface{} {
 func TrackFunction(functionName string) (string, time.Time) {
 	return functionName, time.Now()
 }
-func Duration(msg string, start time.Time) {
-	Log2File(msg + " completed in: " + fmt.Sprint(time.Since(start)))
+func Duration(msg string, start time.Time) time.Duration {
+	timeTaken := time.Since(start)
+	Log2File(msg + " completed in: " + fmt.Sprint(timeTaken))
+	return timeTaken
 }
 
 //IP Stuff
