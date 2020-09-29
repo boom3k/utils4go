@@ -217,7 +217,7 @@ func Duration(msg string, start time.Time) {
 }
 
 //IP Stuff
-func getExternalIp() (string, error) {
+func GetExternalIp() (string, error) {
 	ifaces, err := net.Interfaces()
 	if err != nil {
 		return "", err
