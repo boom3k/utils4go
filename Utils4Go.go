@@ -219,7 +219,7 @@ func Duration(msg string, start time.Time) {
 	Log2File(msg + " completed in: " + fmt.Sprint(timeTaken))
 }
 
-func GetTimeTake() time.Duration {
+func GetTimeTaken() time.Duration {
 	return timeTaken
 }
 
