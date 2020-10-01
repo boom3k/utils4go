@@ -200,13 +200,21 @@ func Log2FileLn(outputLn string) {
 }
 
 /*Json Stuff--------------------------------------------------------------------------*/
-func ParseJSONFileToMap(filePath string) map[string]interface{} {
-	file, _ := os.Open(filePath)
+func ParseJSONFileToMap(filePath string) (map[string]interface{}, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		panic(err)
+		return nil, err
+	}
 	defer file.Close()
-	bytes, _ := ioutil.ReadAll(file)
+	bytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		panic(err)
+		return nil, err
+	}
 	var fileAsJSON map[string]interface{}
 	json.Unmarshal(bytes, &fileAsJSON)
-	return fileAsJSON
+	return fileAsJSON, nil
 }
 func GetJsonValue(target interface{}, key string) interface{} {
 	return target.(map[string]interface{})[key]
