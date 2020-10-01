@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -27,14 +26,16 @@ var log2FileDebug = false
 var logFileName = "runner.log"
 
 /*General Stuff----------------------------------------------------------------------*/
-func GetObj(anyType interface{}, e error) interface{} {
-	CatchException(e)
+func GetObj(anyType interface{}, e error, killOnErr bool) interface{} {
+	CatchException(e, killOnErr)
 	return anyType
 }
-func CatchException(err error) {
+func CatchException(err error, killOnErr bool) {
 	if err != nil {
-		panic(err)
-		log.Fatalf(err.Error())
+		Log2FileLn(err.Error())
+		if killOnErr {
+			panic(err)
+		}
 	}
 }
 
@@ -49,7 +50,7 @@ func SliceContains(s []interface{}, e interface{}) bool {
 }
 
 /*Encryption Stuff--------------------------------------------------------------------*/
-func DecryptString(cipherstring string, keystring string) string {
+func DecryptString(cipherstring string, keystring string) (string, error) {
 	// Byte array of the string
 	ciphertext := []byte(cipherstring)
 
@@ -59,13 +60,14 @@ func DecryptString(cipherstring string, keystring string) string {
 	// Create the AES cipher
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// Before even testing the decryption,
 	// if the text is too small, then it is incorrect
 	if len(ciphertext) < aes.BlockSize {
-		panic("Text is too short")
+		Log2FileLn("Cipher text is too short")
+		return "", nil
 	}
 
 	// Get the 16 byte IV
@@ -80,9 +82,9 @@ func DecryptString(cipherstring string, keystring string) string {
 	// Decrypt bytes from ciphertext
 	stream.XORKeyStream(ciphertext, ciphertext)
 
-	return string(ciphertext)
+	return string(ciphertext), nil
 }
-func EncryptString(plainstring, keystring string) string {
+func EncryptString(plainstring, keystring string) (string, error) {
 	// Byte array of the string
 	plaintext := []byte(plainstring)
 
@@ -92,7 +94,7 @@ func EncryptString(plainstring, keystring string) string {
 	// Create the AES cipher
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err)
+		return "", nil
 	}
 
 	// Empty array of 16 + plaintext length
@@ -104,7 +106,7 @@ func EncryptString(plainstring, keystring string) string {
 
 	// Write 16 rand bytes to fill iv
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		panic(err)
+		return "", err
 	}
 
 	// Return an encrypted stream
@@ -113,23 +115,23 @@ func EncryptString(plainstring, keystring string) string {
 	// EncryptString bytes from plaintext to ciphertext
 	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
 
-	return string(ciphertext)
+	return string(ciphertext), err
 }
 
 /*File Stuff--------------------------------------------------------------------------*/
 func ReadFile(filePath string) []byte {
 	return GetObj(ioutil.ReadFile(filePath)).([]byte)
 }
-func GetAllFiles(root string) []string {
+func GetAllFiles(root string) ([]string, error) {
 	var files []string
 	err := filepath.Walk(root, func(absoluteFilePath string, info os.FileInfo, err error) error {
 		files = append(files, absoluteFilePath)
 		return nil
 	})
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return files
+	return files, nil
 }
 func ByteCount(b int64) string {
 	const unit = 1000
@@ -209,13 +211,11 @@ func Log2FileLn(outputLn string) {
 func ParseJSONFileToMap(filePath string) (map[string]interface{}, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		panic(err)
 		return nil, err
 	}
 	defer file.Close()
 	bytes, err := ioutil.ReadAll(file)
 	if err != nil {
-		panic(err)
 		return nil, err
 	}
 	var fileAsJSON map[string]interface{}
