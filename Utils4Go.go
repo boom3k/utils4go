@@ -120,7 +120,10 @@ func EncryptString(plainstring, keystring string) (string, error) {
 
 /*File Stuff--------------------------------------------------------------------------*/
 func ReadFile(filePath string) []byte {
-	return GetObj(ioutil.ReadFile(filePath)).([]byte)
+	data, err := ioutil.ReadFile(filePath)
+	CatchException(err, true)
+	return data
+
 }
 func GetAllFiles(root string) ([]string, error) {
 	var files []string
@@ -176,7 +179,9 @@ func WriteToFile(filename string, data string) error {
 func Readline(output string) string {
 	Log2File(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
-	CatchException(err)
+	if err != nil {
+		panic(err)
+	}
 	input = strings.Replace(input, "\n", "", -1)
 	input = strings.Replace(input, "\r", "", -1)
 	return input
@@ -192,7 +197,7 @@ func SetLogFileName(fileName string) {
 func Log2File(output string) string {
 	time := time.Now().Format("Mon Jan _2 2006 15:04:05") + " - "
 	f, err := os.OpenFile(logFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
-	CatchException(err)
+	CatchException(err, true)
 	defer f.Close()
 	f.WriteString(time + output)
 	if log2FileDebug == true {
@@ -226,8 +231,14 @@ func GetJsonValue(target interface{}, key string) interface{} {
 	return target.(map[string]interface{})[key]
 }
 func FetchGetResponse(request string) map[string]interface{} {
-	raw := GetObj(http.Get(request)).(*http.Response)
-	data := GetObj(ioutil.ReadAll(raw.Body)).([]byte)
+	raw, err := http.Get(request)
+	if err != nil {
+		panic(err)
+	}
+	data, err := ioutil.ReadAll(raw.Body)
+	if err != nil {
+		panic(err)
+	}
 	var response map[string]interface{}
 	json.Unmarshal(data, &response)
 	return response
