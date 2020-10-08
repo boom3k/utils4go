@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"os"
@@ -210,6 +211,15 @@ func Log2File(output string) string {
 }
 func Log2FileLn(outputLn string) {
 	Log2File(outputLn + "\n")
+}
+func SetNativeLogger(logfileName string) {
+	f, err := os.OpenFile(logfileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		panic(err)
+		log.Fatalf("error opening file: %v", err)
+	}
+	defer f.Close()
+	log.SetOutput(f)
 }
 
 /*Json Stuff--------------------------------------------------------------------------*/
