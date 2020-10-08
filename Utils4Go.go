@@ -20,11 +20,12 @@ import (
 )
 
 func main() {
+	defer SetNativeLogger("x.log").Close()
+	log.Println("Tesfeafeffet")
 }
 
 var timeTaken time.Duration
 var log2FileDebug = false
-var logFileName = "runner.log"
 
 /*General Stuff----------------------------------------------------------------------*/
 func GetObj(anyType interface{}, e error, killOnErr bool) interface{} {
@@ -190,15 +191,15 @@ func Readline(output string) string {
 }
 
 /*Log Stuff---------------------------------------------------------------------------*/
-func SetNativeLogger(logfileName string) {
+func SetNativeLogger(logfileName string) *os.File {
+	log.Println("Logging to file: " + logfileName)
 	f, err := os.OpenFile(logfileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
-		panic(err)
 		log.Fatalf("error opening file: %v", err)
 	}
-	defer f.Close()
 	mw := io.MultiWriter(os.Stdout, f)
 	log.SetOutput(mw)
+	return f
 }
 
 /*Json Stuff--------------------------------------------------------------------------*/
