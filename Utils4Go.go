@@ -190,14 +190,15 @@ func Readline(output string) string {
 }
 
 /*Log Stuff---------------------------------------------------------------------------*/
-func SetNativeLogger(logfileName string) *os.File {
+func SetNativeLogger(logfileName string) {
 	f, err := os.OpenFile(logfileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		panic(err)
 		log.Fatalf("error opening file: %v", err)
 	}
-	log.SetOutput(f)
-	return f
+	defer f.Close()
+	mw := io.MultiWriter(os.Stdout, f)
+	log.SetOutput(mw)
 }
 
 /*Json Stuff--------------------------------------------------------------------------*/
