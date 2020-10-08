@@ -33,7 +33,7 @@ func GetObj(anyType interface{}, e error, killOnErr bool) interface{} {
 }
 func CatchException(err error, killOnErr bool) {
 	if err != nil {
-		Log2FileLn(err.Error())
+		log.Println(err.Error())
 		if killOnErr {
 			panic(err)
 		}
@@ -67,7 +67,7 @@ func DecryptString(cipherstring string, keystring string) (string, error) {
 	// Before even testing the decryption,
 	// if the text is too small, then it is incorrect
 	if len(ciphertext) < aes.BlockSize {
-		Log2FileLn("Cipher text is too short")
+		log.Println("Cipher text is too short")
 		return "", nil
 	}
 
@@ -178,40 +178,18 @@ func WriteToFile(filename string, data string) error {
 
 /*Console Stuff-----------------------------------------------------------------------*/
 func Readline(output string) string {
-	Log2File(output)
+	log.Print(output)
 	input, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	if err != nil {
 		panic(err)
 	}
 	input = strings.Replace(input, "\n", "", -1)
 	input = strings.Replace(input, "\r", "", -1)
+	log.Print(input)
 	return input
 }
 
 /*Log Stuff---------------------------------------------------------------------------*/
-func EnabledLog2FileDebug() {
-	log2FileDebug = true
-}
-func SetLogFileName(fileName string) {
-	logFileName = fileName + ".log"
-}
-func Log2File(output string) string {
-	time := time.Now().Format("Mon Jan _2 2006 15:04:05") + " - "
-	f, err := os.OpenFile(logFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0777)
-	CatchException(err, true)
-	defer f.Close()
-	f.WriteString(time + output)
-	if log2FileDebug == true {
-		fmt.Print(time + output)
-	} else {
-		fmt.Print(output)
-	}
-
-	return output
-}
-func Log2FileLn(outputLn string) {
-	Log2File(outputLn + "\n")
-}
 func SetNativeLogger(logfileName string) {
 	f, err := os.OpenFile(logfileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
@@ -260,7 +238,7 @@ func TrackFunction(functionName string) (string, time.Time) {
 }
 func Duration(msg string, start time.Time) {
 	timeTaken = time.Since(start)
-	Log2FileLn(msg + " completed in: " + fmt.Sprint(timeTaken))
+	log.Println(msg + " completed in: " + fmt.Sprint(timeTaken))
 }
 func GetTimeTaken() time.Duration {
 	return timeTaken
