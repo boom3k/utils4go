@@ -238,9 +238,10 @@ func FetchGetResponse(request string) map[string]interface{} {
 func TrackFunction(functionName string) (string, time.Time) {
 	return functionName, time.Now()
 }
-func Duration(msg string, start time.Time) {
+func Duration(msg string, start time.Time) string {
 	timeTaken = time.Since(start)
 	log.Println(msg + " completed in: " + fmt.Sprint(timeTaken))
+	return fmt.Sprint(timeTaken)
 }
 func GetTimeTaken() time.Duration {
 	return timeTaken
