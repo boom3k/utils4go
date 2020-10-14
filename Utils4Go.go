@@ -6,7 +6,6 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -248,10 +247,10 @@ func GetTimeTaken() time.Duration {
 }
 
 /*IP Stuff-----------------------------------------------------------------------------*/
-func GetExternalIp() (string, error) {
+func GetExternalIp() string {
 	ifaces, err := net.Interfaces()
 	if err != nil {
-		return "", err
+		panic(err)
 	}
 	for _, iface := range ifaces {
 		if iface.Flags&net.FlagUp == 0 {
@@ -262,7 +261,7 @@ func GetExternalIp() (string, error) {
 		}
 		addrs, err := iface.Addrs()
 		if err != nil {
-			return "", err
+			panic(err)
 		}
 		for _, addr := range addrs {
 			var ip net.IP
@@ -279,8 +278,8 @@ func GetExternalIp() (string, error) {
 			if ip == nil {
 				continue // not an ipv4 address
 			}
-			return ip.String(), nil
+			return ip.String()
 		}
 	}
-	return "", errors.New(" are you connected to the network?")
+	return "Are you connected to a network?"
 }
