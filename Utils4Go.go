@@ -204,6 +204,7 @@ func SetNativeLogger(logfileName string) *os.File {
 
 /*CSV Stuff ---------------------------------------------------------------------------*/
 func GetValuesFromCSVFile(csvFilePath string) [][]interface{} {
+	log.Println("Reading csv file: " + csvFilePath)
 	var csvValues [][]interface{}
 	csvFile, _ := os.Open(csvFilePath)
 	reader := csv.NewReader(bufio.NewReader(csvFile))
@@ -221,6 +222,7 @@ func GetValuesFromCSVFile(csvFilePath string) [][]interface{} {
 		}
 		csvValues = append(csvValues, rowData)
 	}
+	log.Println("Returning [" + fmt.Sprint(len(csvValues)) + "] rows from " + csvFilePath)
 	return csvValues
 }
 
