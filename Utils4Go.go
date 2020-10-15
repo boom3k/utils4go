@@ -225,6 +225,17 @@ func GetValuesFromCSVFile(csvFilePath string) [][]interface{} {
 	log.Println("Returning [" + fmt.Sprint(len(csvValues)) + "] rows from " + csvFilePath)
 	return csvValues
 }
+func ConvertInterfaceNestedArray(sheetWriteValues [][]interface{}) [][]string {
+	var result [][]string
+	for row := range sheetWriteValues {
+		var rowData []string
+		for column := range sheetWriteValues[row] {
+			rowData = append(rowData, fmt.Sprint(sheetWriteValues[row][column]))
+		}
+		result = append(result, rowData)
+	}
+	return result
+}
 
 /*Json Stuff--------------------------------------------------------------------------*/
 func ParseJSONFileToMap(filePath string) (map[string]interface{}, error) {
