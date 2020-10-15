@@ -236,6 +236,38 @@ func ConvertInterfaceNestedArray(sheetWriteValues [][]interface{}) [][]string {
 	}
 	return result
 }
+func WriteInterfaceNestedArrayToCsv(csvWriteValues [][]interface{}, fileName string) {
+	csvFile, csvCreateErr := os.Create(fileName)
+	if csvCreateErr != nil {
+		log.Println(csvCreateErr.Error())
+		panic(csvCreateErr)
+	}
+	writer := csv.NewWriter(csvFile)
+	defer writer.Flush()
+	for _, value := range ConvertInterfaceNestedArray(csvWriteValues) {
+		writerErr := writer.Write(value)
+		if writerErr != nil {
+			log.Println(writerErr.Error())
+			panic(writerErr)
+		}
+	}
+}
+func WriteToCsv(values [][]string, fileName string) {
+	csvFile, csvCreateErr := os.Create(fileName)
+	if csvCreateErr != nil {
+		log.Println(csvCreateErr.Error())
+		panic(csvCreateErr)
+	}
+	writer := csv.NewWriter(csvFile)
+	defer writer.Flush()
+	for _, value := range values {
+		writerErr := writer.Write(value)
+		if writerErr != nil {
+			log.Println(writerErr.Error())
+			panic(writerErr)
+		}
+	}
+}
 
 /*Json Stuff--------------------------------------------------------------------------*/
 func ParseJSONFileToMap(filePath string) (map[string]interface{}, error) {
