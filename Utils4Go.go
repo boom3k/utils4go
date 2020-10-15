@@ -5,6 +5,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -189,7 +190,7 @@ func Readline(output string) string {
 	return input
 }
 
-/*Log Stuff---------------------------------------------------------------------------*/
+/*Log Stuff ---------------------------------------------------------------------------*/
 func SetNativeLogger(logfileName string) *os.File {
 	log.Println("Logging to file: " + logfileName)
 	f, err := os.OpenFile(logfileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
@@ -199,6 +200,28 @@ func SetNativeLogger(logfileName string) *os.File {
 	mw := io.MultiWriter(os.Stdout, f)
 	log.SetOutput(mw)
 	return f
+}
+
+/*CSV Stuff ---------------------------------------------------------------------------*/
+func GetValuesFromCSVFile(csvFilePath string) [][]interface{} {
+	var csvValues [][]interface{}
+	csvFile, _ := os.Open(csvFilePath)
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+	for {
+		var rowData []interface{}
+		row, error := reader.Read()
+		if error == io.EOF {
+			break
+		} else if error != nil {
+			log.Println(error.Error())
+			panic(error)
+		}
+		for column := range row {
+			rowData = append(rowData, row[column])
+		}
+		csvValues = append(csvValues, rowData)
+	}
+	return csvValues
 }
 
 /*Json Stuff--------------------------------------------------------------------------*/
