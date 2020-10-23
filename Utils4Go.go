@@ -225,10 +225,21 @@ func GetValuesFromCSVFile(csvFilePath string) [][]interface{} {
 	log.Println("Returning [" + fmt.Sprint(len(csvValues)) + "] rows from " + csvFilePath)
 	return csvValues
 }
-func ConvertInterfaceNestedArray(sheetWriteValues [][]interface{}) [][]string {
+func ConvertInterfaceSheetValuesToStrings(sheetWriteValues [][]interface{}) [][]string {
 	var result [][]string
 	for row := range sheetWriteValues {
 		var rowData []string
+		for column := range sheetWriteValues[row] {
+			rowData = append(rowData, fmt.Sprint(sheetWriteValues[row][column]))
+		}
+		result = append(result, rowData)
+	}
+	return result
+}
+func ConvertStringSheetValuesToInterfaces(sheetWriteValues [][]string) [][]interface{} {
+	var result [][]interface{}
+	for row := range sheetWriteValues {
+		var rowData []interface{}
 		for column := range sheetWriteValues[row] {
 			rowData = append(rowData, fmt.Sprint(sheetWriteValues[row][column]))
 		}
@@ -244,7 +255,7 @@ func WriteInterfaceNestedArrayToCsv(csvWriteValues [][]interface{}, fileName str
 	}
 	writer := csv.NewWriter(csvFile)
 	defer writer.Flush()
-	for _, value := range ConvertInterfaceNestedArray(csvWriteValues) {
+	for _, value := range ConvertInterfaceSheetValuesToStrings(csvWriteValues) {
 		writerErr := writer.Write(value)
 		if writerErr != nil {
 			log.Println(writerErr.Error())
