@@ -247,7 +247,7 @@ func ConvertStringSheetValuesToInterfaces(sheetWriteValues [][]string) [][]inter
 	}
 	return result
 }
-func WriteInterfaceNestedArrayToCsv(csvWriteValues [][]interface{}, fileName string) {
+func WriteToCSV(csvWriteValues [][]interface{}, fileName string) {
 	csvFile, csvCreateErr := os.Create(fileName)
 	if csvCreateErr != nil {
 		log.Println(csvCreateErr.Error())
@@ -256,22 +256,6 @@ func WriteInterfaceNestedArrayToCsv(csvWriteValues [][]interface{}, fileName str
 	writer := csv.NewWriter(csvFile)
 	defer writer.Flush()
 	for _, value := range ConvertInterfaceSheetValuesToStrings(csvWriteValues) {
-		writerErr := writer.Write(value)
-		if writerErr != nil {
-			log.Println(writerErr.Error())
-			panic(writerErr)
-		}
-	}
-}
-func WriteToCsv(values [][]string, fileName string) {
-	csvFile, csvCreateErr := os.Create(fileName)
-	if csvCreateErr != nil {
-		log.Println(csvCreateErr.Error())
-		panic(csvCreateErr)
-	}
-	writer := csv.NewWriter(csvFile)
-	defer writer.Flush()
-	for _, value := range values {
 		writerErr := writer.Write(value)
 		if writerErr != nil {
 			log.Println(writerErr.Error())
