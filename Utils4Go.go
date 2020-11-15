@@ -42,9 +42,18 @@ func CatchException(err error, killOnErr bool) {
 }
 
 /*String Stuff-----------------------------------------------------------------------*/
-func SliceContains(s []interface{}, e interface{}) bool {
-	for _, a := range s {
-		if a == e {
+func SliceContains(slice []interface{}, target interface{}) bool {
+	for _, a := range slice {
+		if a == target {
+			return true
+		}
+	}
+	return false
+}
+
+func SliceContainsString(slice []string, target string) bool {
+	for _, s := range slice {
+		if s == target {
 			return true
 		}
 	}
