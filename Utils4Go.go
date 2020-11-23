@@ -20,8 +20,6 @@ import (
 )
 
 func main() {
-	defer SetNativeLogger("x.log").Close()
-	log.Println("Tesfeafeffet")
 }
 
 var timeTaken time.Duration
