@@ -51,9 +51,9 @@ func SliceContains(slice []interface{}, target interface{}) bool {
 
 func StringSliceContains(slice []string, target string, ignoreCase bool) bool {
 	for _, s := range slice {
-		if !ignoreCase {
+		if ignoreCase == true {
 			s = strings.ToLower(s)
-			target = strings.ToLower(target)
+			target = strings.TrimSpace(strings.ToLower(target))
 		}
 		if s == target {
 			return true
