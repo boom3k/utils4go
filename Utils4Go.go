@@ -49,8 +49,12 @@ func SliceContains(slice []interface{}, target interface{}) bool {
 	return false
 }
 
-func SliceContainsString(slice []string, target string) bool {
+func StringSliceContains(slice []string, target string, ignoreCase bool) bool {
 	for _, s := range slice {
+		if !ignoreCase {
+			s = strings.ToLower(s)
+			target = strings.ToLower(target)
+		}
 		if s == target {
 			return true
 		}
